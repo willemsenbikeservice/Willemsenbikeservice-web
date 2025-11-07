@@ -289,25 +289,71 @@ h2 {
 .footer {
   background: var(--dark);
   color: #f1f1f1;
-  padding: 50px 0 20px;
+  padding: 60px 0 25px;
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
   gap: 40px;
 }
 
+.footer-column {
+  flex: 1 1 300px;
+  min-width: 250px;
+}
+
 .footer h4 {
-  margin-bottom: 10px;
-  color: white;
+  margin-bottom: 12px;
+  color: var(--blue);
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 .footer p {
-  margin: 4px 0;
-  line-height: 1.5;
+  margin: 6px 0;
+  line-height: 1.6;
   color: #d0d0d0;
+  font-size: 0.95rem;
 }
+
+.footer a {
+  color: var(--blue);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.footer a:hover {
+  color: white;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 40px;
+  padding-top: 15px;
+  font-size: 0.9rem;
+  color: #bdbdbd;
+}
+
+/* Responsive footer layout */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .footer-column {
+    margin-bottom: 30px;
+  }
+}
+
 
 /* Animations */
 .animate-reveal {
@@ -342,4 +388,79 @@ h2 {
   .hero p { font-size: 1rem; }
   .hero { height: 70vh; }
   section { padding: 70px 0; }
+}
+
+/* Over ons accent */
+.about-text p:last-child {
+  color: var(--blue);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+/* --- NIEUWE DATUM + TIJD SELECT --- */
+.form-date-time {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-date-time input[type="date"],
+.form-date-time select {
+  flex: 1;
+  min-width: 140px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 15px;
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.form-date-time input[type="date"]:focus,
+.form-date-time select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.15);
+}
+
+.form-date-time select option {
+  padding: 6px;
+}
+
+/* === Scroll to Top Button === */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.scroll-top-btn:hover {
+  background: #004acc;
+  transform: translateY(-3px);
+}
+
+/* === Sectie Reveal Animaties === */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

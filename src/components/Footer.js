@@ -1,26 +1,55 @@
 import React from "react";
+import "../App.css"; // gebruik de bestaande styles van je project
 
-export default function Footer() {
+const Footer = () => {
   return (
-    <footer className="footer animate-reveal">
-      <div className="container footer-grid">
-        <div>
-          <h4>Willemsen Bike Service</h4>
-          <p>Betrouwbare service & onderhoud.</p>
+    <footer className="footer">
+      <div className="footer-container">
+        {/* Linker kolom */}
+        <div className="footer-column">
+          <h3 className="footer-title">Willemsen Bike Service</h3>
+          <p>
+            Vakmanschap en passie voor de fiets.<br />
+            Betrouwbare herstellingen, zorgvuldig onderhoud en persoonlijke service in Riemst.
+          </p>
         </div>
-        <div>
-          <h4>Contact</h4>
-          <p>info@willemsenbike.nl</p>
-          <p>Tel: 06-XXXX XXXX</p>
+
+        {/* Middenkolom */}
+        <div className="footer-column">
+          <h4 className="footer-subtitle">Contact</h4>
+          <p>
+            📍 Arthur Meulemansstraat 7, 3770 Riemst<br />
+            📞 <a href="tel:+31613107376">+31 6 13107376</a><br />
+            ✉️ <a href="mailto:willemsenbikeservices@gmail.com">
+              willemsenbikeservices@gmail.com
+            </a><br />
+            🌐 <a
+              href="https://www.Willemsenbikeservice.be"
+              target="_blank"
+              rel="noreferrer"
+            >
+              www.Willemsenbikeservice.be
+            </a>
+          </p>
         </div>
-        <div>
-          <h4>Adres</h4>
-          <p>Uw Straat 12<br />Riemst, België</p>
+
+        {/* Rechter kolom */}
+        <div className="footer-column">
+          <h4 className="footer-subtitle">Openingstijden</h4>
+          <p>
+            Op aanvraag — maandag t/m zondag<br />
+            <span className="footer-note">
+              Neem contact op voor een afspraak.
+            </span>
+          </p>
         </div>
       </div>
-      <div style={{ textAlign: "center", marginTop: 15 }}>
-        © 2025 Willemsen Bike Service
+
+      <div className="footer-bottom">
+        © {new Date().getFullYear()} Willemsen Bike Service – Alle rechten voorbehouden
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;
