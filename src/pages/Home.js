@@ -8,6 +8,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [fileData, setFileData] = useState(null);
   const formRef = useRef();
 
   const [selectedDate, setSelectedDate] = useState("");
@@ -47,24 +48,49 @@ export default function Home() {
     return slots;
   }
 
+  // 📎 Bestand inlezen (blijft actief maar niet zichtbaar)
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert("Bestand is te groot. Kies een bestand kleiner dan 2 MB.");
+        e.target.value = null;
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => setFileData(reader.result);
+      reader.readAsDataURL(file);
+    } else {
+      setFileData(null);
+    }
+  };
+
   // E-mails versturen (klant + eigenaar)
   const sendEmail = (e) => {
     e.preventDefault();
     setLoading(true);
 
+    const serviceID = "service_9n4vqny";
+    const publicKey = "qPKid3V17nWCtS_NJ";
+
     // 1️⃣ Stuur bevestiging naar klant
     emailjs
-      .sendForm("service_9n4vqny", "template_9vynnxj", formRef.current, "qPKid3V17nWCtS_NJ")
+      .sendForm(serviceID, "template_9vynnxj", formRef.current, publicKey)
       .then(() => {
         console.log("✅ Klantbevestiging verzonden.");
 
-        // 2️⃣ Stuur melding naar Willemsen Bike Service
-        return emailjs.sendForm(
-          "service_9n4vqny",
-          "template_g27566l",
-          formRef.current,
-          "qPKid3V17nWCtS_NJ"
-        );
+        // 2️⃣ Stuur melding naar Willemsen Bike Service (inclusief bestand)
+        const params = {
+          name: formRef.current.name.value,
+          email: formRef.current.email.value,
+          phone: formRef.current.phone.value,
+          message: formRef.current.message.value,
+          date: selectedDate,
+          time: selectedTime,
+          file: fileData || "Geen bestand toegevoegd",
+        };
+
+        return emailjs.send(serviceID, "template_g27566l", params, publicKey);
       })
       .then(() => {
         console.log("📩 Interne melding verzonden.");
@@ -74,6 +100,7 @@ export default function Home() {
         formRef.current.reset();
         setSelectedDate("");
         setSelectedTime("");
+        setFileData(null);
       })
       .catch((err) => {
         console.error("❌ Email fout:", err);
@@ -95,43 +122,63 @@ export default function Home() {
       </section>
 
       {/* DIENSTEN */}
-      <section id="diensten" className="content">
-        <div className="container">
-          <h2 className="animate-reveal">Onze Diensten</h2>
-          <div className="grid">
-            <div className="card animate-reveal">
-              <Link to="/fietsreparatie">
-                <img src="/images/service1.jpg" loading="lazy" alt="Fietsreparatie" />
-              </Link>
-              <div className="card-body">
-                <h3>Fietsreparatie</h3>
-                <p>Snel en vakkundig alle fietsproblemen verholpen.</p>
-                <Link to="/fietsreparatie" className="btn" style={{ marginTop: 8 }}>Meer info</Link>
-              </div>
-            </div>
-            <div className="card animate-reveal">
-              <Link to="/onderhoud">
-                <img src="/images/service2.jpg" loading="lazy" alt="Onderhoud" />
-              </Link>
-              <div className="card-body">
-                <h3>Onderhoud</h3>
-                <p>Voorkom pech met professioneel onderhoud.</p>
-                <Link to="/onderhoud" className="btn" style={{ marginTop: 8 }}>Meer info</Link>
-              </div>
-            </div>
-            <div className="card animate-reveal">
-              <Link to="/tweedehands">
-                <img src="/images/service3.jpg" loading="lazy" alt="Tweedehands fietsen" />
-              </Link>
-              <div className="card-body">
-                <h3>Tweedehands Fietsen</h3>
-                <p>Kwaliteit en rijklaar — binnenkort beschikbaar.</p>
-                <Link to="/tweedehands" className="btn" style={{ marginTop: 8 }}>Meer info</Link>
-              </div>
-            </div>
-          </div>
+<section id="diensten" className="content">
+  <div className="container">
+    <div className="diensten-header">
+      <h2>Onze Diensten</h2>
+      <p>Ontdek wat Willemsen Bike Service voor jou en je fiets kan betekenen.</p>
+      <div className="diensten-divider"></div>
+    </div>
+
+    <div className="diensten-grid">
+      {/* 1️⃣ Fietsreparaties */}
+      <div className="dienst-card animate-reveal">
+        <img src="/images/reparaties.jpg" alt="Fietsreparaties" />
+        <div className="dienst-card-body">
+          <h3>Fietsreparaties</h3>
+          <p>
+            Snelle, vakkundige herstellingen voor elk type fiets — van racefiets tot
+            e-bike. Altijd met originele onderdelen en transparante prijzen.
+          </p>
+          <a href="/fietsreparatie" className="btn">
+            Bekijk prijslijst
+          </a>
         </div>
-      </section>
+      </div>
+
+      {/* 2️⃣ Fietsonderhoud */}
+      <div className="dienst-card animate-reveal">
+        <img src="/images/onderhoud.jpg" alt="Fietsonderhoud" />
+        <div className="dienst-card-body">
+          <h3>Fietsonderhoud</h3>
+          <p>
+            Van kleine beurt tot volledige revisie — wij zorgen dat jouw fiets soepel,
+            stil en betrouwbaar blijft rijden.
+          </p>
+          <a href="/onderhoud" className="btn">
+            Plan onderhoud
+          </a>
+        </div>
+      </div>
+
+      {/* 3️⃣ Projecten & maatwerk */}
+      <div className="dienst-card animate-reveal">
+        <img src="/images/projecten.jpg" alt="Projecten & maatwerk" />
+        <div className="dienst-card-body">
+          <h3>Projecten & maatwerk</h3>
+          <p>
+            Bekijk onze recente projecten, maatwerk-oplossingen en unieke WBS-builds.
+            Klik op een project voor meer foto’s en details.
+          </p>
+          <a href="/projecten" className="btn">
+            Bekijk projecten
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* OVER ONS */}
       <section id="overons" className="about animate-reveal">
@@ -165,8 +212,13 @@ export default function Home() {
       {/* AFSPRAAK */}
       <section id="afspraak" className="contact animate-reveal">
         <div className="container">
-          <h2>Plan een Afspraak</h2>
           <form ref={formRef} onSubmit={sendEmail} className="form">
+            <div className="form-title">
+              <h2>Plan je service-afspraak</h2>
+              <p>Breng je fiets weer in topvorm — wij zorgen dat alles rijdt als nieuw, op het moment dat jou past.</p>
+              <div className="form-divider"></div>
+            </div>
+
             <input name="name" placeholder="Naam" required />
             <input name="email" type="email" placeholder="E-mail" required />
             <input name="phone" placeholder="Telefoonnummer" />
@@ -193,6 +245,20 @@ export default function Home() {
               </select>
             </div>
 
+            {/* 📎 Uploadveld (nog verborgen) */}
+            <div style={{ display: "none" }}>
+              <label htmlFor="file" style={{ fontWeight: 600 }}>
+                Foto of video van het probleem (optioneel)
+              </label>
+              <input
+                id="file"
+                type="file"
+                name="file"
+                accept="image/*,video/*"
+                onChange={handleFileChange}
+              />
+            </div>
+
             <button type="submit" className="btn">Verstuur</button>
             {loading && <div className="loader-pulse"></div>}
           </form>
@@ -200,7 +266,11 @@ export default function Home() {
       </section>
 
       {/* POPUP */}
-      {showPopup && <div className="success-popup">✅ Service gepland! Wij nemen spoedig contact op.</div>}
+      {showPopup && (
+        <div className="success-popup">
+          ✅ Service gepland! Wij nemen spoedig contact op.
+        </div>
+      )}
     </>
   );
 }

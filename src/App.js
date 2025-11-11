@@ -9,8 +9,12 @@ import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Fietsreparatie from "./pages/Fietsreparatie";
 import Onderhoud from "./pages/Onderhoud";
-import Tweedehands from "./pages/Tweedehands";
+import Projecten from "./pages/Projecten";
 import NotFound from "./pages/NotFound";
+
+import useReveal from "./hooks/useReveal";
+
+
 
 export default function App() {
   return (
@@ -21,7 +25,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/fietsreparatie" element={<Fietsreparatie />} />
           <Route path="/onderhoud" element={<Onderhoud />} />
-          <Route path="/tweedehands" element={<Tweedehands />} />
+          <Route path="/projecten" element={<Projecten />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
@@ -29,4 +33,5 @@ export default function App() {
       </div>
     </Router>
   );
+  
 }
